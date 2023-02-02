@@ -18,6 +18,10 @@ UNION
 
 (SELECT employees.first_name, employees.last_name, employees.department_id, departments.department_name FROM employees, departments WHERE (employees.department_id = departments.department_id) AND departments.department_id = "2");
 
+-- Sin utilizar UNION
+
+SELECT employees.first_name, employees.last_name, employees.department_id, departments.department_name FROM employees, departments WHERE employees.department_id = departments.department_id AND employees.department_id in (1,2);
+
 -- 5) Write a query in SQL to display those employees who contain a letter ‘a’ into their first name and also display their last name, department, city, and state_province (table: departments, employees, locations).
 
 SELECT employees.first_name, employees.last_name, departments.department_name, locations.city, locations.state_province FROM employees, departments, locations WHERE (employees.department_id = departments.department_id AND departments.location_id = locations.location_id) AND employees.first_name LIKE '%A%'; 
