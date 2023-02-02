@@ -4,11 +4,13 @@ USE biblioteca;
 
 
 CREATE TABLE autor (
+    
     autorID INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(64)
 );
 
 CREATE TABLE libro (
+
     libroID INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(64),
     ISBN CHAR(10) UNIQUE NOT NULL,
@@ -17,6 +19,7 @@ CREATE TABLE libro (
 );
 
 CREATE TABLE ejemplar (
+
     ejemplarID INT PRIMARY KEY AUTO_INCREMENT,
     libroID INT,
     localizacion VARCHAR(128),
@@ -31,20 +34,20 @@ CREATE TABLE usuario (
 );
 
 CREATE TABLE autoria (
+
     autorID INT,
     libroID INT,
-
     PRIMARY KEY (autorID, libroID),
     FOREIGN KEY (autorID) REFERENCES autor(autorID),
     FOREIGN KEY (libroID) REFERENCES libro(libroID)
 );
 
 CREATE TABLE prestamo (
+
     usuarioID INT,
     ejemplarID INT,
     fechaDevolucion DATE,
     fechaPrestamo DATE NOT NULL,
-
     PRIMARY KEY(usuarioID, ejemplarID),
     FOREIGN KEY (usuarioID) REFERENCES usuario(usuarioID),
     FOREIGN KEY (ejemplarID) REFERENCES ejemplar(ejemplarID)
