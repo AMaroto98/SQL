@@ -22,8 +22,6 @@ SELECT DISTINCT customer_id FROM orders where order_date BETWEEN '2016-04-01' AN
 
 SELECT DISTINCT customers.last_name FROM customers, orders WHERE (month(order_date), year(order_date)) = (4,2016);
 
-SELECT customers.last_name FROM customers, orders WHERE (month(order_date), year(order_date)) = (4,2016);
-
 -- 7) Based on the instructor table from the university database, compare the following two queries.
 -- select * from instructor where (name = 'Mozart' or dept_name='Music') and salary=100000;
 -- select * from instructor where name = 'Mozart' or (dept_name='Music' and salary=100000);
