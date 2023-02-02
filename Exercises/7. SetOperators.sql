@@ -24,7 +24,7 @@ SELECT city FROM salesman;
 
 -- 4) Find all the customers and salesmen that live in Bengalore. Label the column customers_and_salesmen.
 
-SELECT cust_name FROM customer WHERE city = 'Bengalore'
+SELECT cust_name AS customers_and_salesmen FROM customer WHERE city = 'Bengalore'
 
 UNION
 
