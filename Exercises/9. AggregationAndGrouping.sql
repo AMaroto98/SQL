@@ -54,7 +54,7 @@ SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY o
 
 SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY ord_date, customer_id HAVING MAX(pur_amt) = 10000 OR MAX(pur_amt) = 8700 OR MAX(pur_amt) = 1500;
 
--- Query alterntiva
+-- Query alternativa
 
 SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY ord_date, customer_id HAVING MAX(pur_amt) IN (10000, 8700, 1500);
 
