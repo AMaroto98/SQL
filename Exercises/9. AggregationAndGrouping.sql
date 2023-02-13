@@ -54,7 +54,9 @@ SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY o
 
 SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY ord_date, customer_id HAVING MAX(pur_amt) = 10000 OR MAX(pur_amt) = 8700 OR MAX(pur_amt) = 1500;
 
--- Preguntar a ver si hay alguna otra forma de sacar la query.
+-- Query alterntiva
+
+SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY ord_date, customer_id HAVING MAX(pur_amt) IN (10000, 8700, 1500);
 
 -- 15) Find the maximum purchase amount for each customer each day. Show only  the results where the customer_id is between 250 and 450. 
 
