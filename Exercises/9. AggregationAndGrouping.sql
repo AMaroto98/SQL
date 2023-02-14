@@ -38,7 +38,7 @@ SELECT customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY customer_id
 
 SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY ord_date, customer_id;
 
--- 11) Write a SQL query to determine the highest purchase amount made by each salesperson in 2020. Return salesperson ID, purchase amount.
+-- 11) Write a SQL query to determine the highest purchase amount made by each salesman in 2020. Return salesman ID, purchase amount.
 
 SELECT salesman_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders WHERE YEAR (ord_date) = '2020' GROUP BY salesman_id;
 
@@ -66,7 +66,7 @@ SELECT ord_date, customer_id, MAX(pur_amt) AS Max_Pur_Amt FROM orders GROUP BY o
 
 SELECT MAX(pur_amt), customer_id FROM orders GROUP BY customer_id HAVING (customer_id BETWEEN 200 AND 400) AND MAX(pur_amt) > 9000; 
 
--- 17) Find the maximum order for each salesman for salesmen with id between 15 and 40. Return salesperson id and maximum purchase amount.
+-- 17) Find the maximum order for each salesman for salesmen with id between 15 and 40. Return salesman id and maximum purchase amount.
 
 SELECT MAX(pur_amt), salesman_id FROM orders GROUP BY salesman_id HAVING salesman_id BETWEEN 15 AND 40; 
 
@@ -78,6 +78,6 @@ SELECT COUNT(ord_date) AS Orders FROM orders WHERE ord_date = '2020-03-25';
 
 SELECT COUNT(salesman_id) AS Salesman FROM salesman WHERE city IS NOT NULL;
 
--- 20) List the number of orders for each salesperson and date.
+-- 20) List the number of orders for each salesman and date.
 
 SELECT salesman_id, ord_date, COUNT(ord_no) FROM orders GROUP BY ord_date, salesman_id; 
