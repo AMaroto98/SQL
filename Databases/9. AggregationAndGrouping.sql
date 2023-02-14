@@ -1,6 +1,6 @@
-drop database if exists Aggregation;
+DROP DATABASE IF EXISTS Aggregation;
 CREATE DATABASE Aggregation;
-use Aggregation;
+USE Aggregation;
 
 CREATE TABLE salesman (
     salesman_id INT PRIMARY KEY,
