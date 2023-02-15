@@ -134,24 +134,23 @@ SELECT * FROM employees WHERE MONTHNAME(begin_date) = "February";
 
 SELECT * FROM employees WHERE surname LIKE "R%" AND YEAR(begin_date) = 1990;
 
--- 34. Show the name, surname, department name of the employees who have no commission (clue: is NULL).
+-- 34) Show the name, surname, department name of the employees who have no commission (clue: is NULL).
 
 SELECT name, surname, dept_num FROM employees WHERE commission IS NULL;
 
--- 35. Show the name, surname and occupation of employees with the name, surname and occupation of their managers. Columns must have different names and you must order it by the manager surname.
-
-SELECT name, surname, occupation FROM employees ON
-
-
-SELECT name, surname, occupation FROM employees IN (SELECT name FROM employees WHERE occupation = "MANAGER");
-
+-- 35) Show the name, surname and occupation of employees with the name, surname and occupation of their managers. Columns must have different names and you must order it by the manager surname.
 
 SELECT 
-  e.name AS name, 
-  e.surname AS surname, 
-  e.occupation AS occupation, 
-  m.name AS name, 
-  m.surname AS surname, 
-  m.occupation AS occupation
-FROM employees e
-INNER JOIN employees m ON e.name = m.name;
+    e.name AS employee_name, 
+    e.surname AS employee_surname, 
+    e.occupation AS employee_occupation, 
+    m.name AS manager_name, 
+    m.surname AS manager_surname, 
+    m.occupation AS manager_occupation
+FROM 
+    employees e, 
+    employees m
+WHERE 
+    e.manager = m.num
+ORDER BY 
+    manager_surname;
