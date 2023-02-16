@@ -31,6 +31,9 @@ SELECT * FROM listofitem WHERE coname=NULL;
 
 SELECT * FROM listofitem WHERE coname<>NULL;
 
+-- <> --> No es igual
+-- Por qué no salen los dos que no son NULL?
+
 -- Empty set
 
 SELECT * FROM listofitem WHERE coname<=>NULL;
@@ -55,15 +58,27 @@ SELECT * FROM listofitem WHERE coname NOT IN (NULL);
 
 SELECT * FROM listofitem WHERE coname NOT IN (NULL, 'ABJ ENTERPRISE');
 
+-- Empty set. Mirar el motivo
+
 SELECT 0 IS UNKNOWN;
+
+-- False
 
 SELECT 1 IS UNKNOWN;
 
+-- False
+
 SELECT NULL IS UNKNOWN;
+
+-- True
 
 SELECT (NULL = NULL) IN UNKNOWN;
 
+-- Null
+
 SELECT coname FROM listofitem;
+
+-- Lo esperado
 
 SELECT CONCAT(coname, 'is the best') FROM listofitem;
 
@@ -71,6 +86,9 @@ SELECT CONCAT(coname, 'is the best') FROM listofitem;
 
 SELECT CONCAT(coname, 'is the best') is UNKNOWN FROM listofitem;
 
+-- El primero como es null es desconocido por eso da TRUE dado de NULL ES DESCONOCIDO
+
+-- Los otros dos dan false porque se conoce su valor.
 
 
 
