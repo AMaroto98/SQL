@@ -103,6 +103,26 @@ UNION
 FROM OCCUPATIONS, DEPARTMENTS
 WHERE DEPARTMENTS.name = "SALES");
 
+-- EL DE ARRIBA ESTÁ MAL
+
+SELECT OCCUPATIONS.name 
+FROM EMPLOYEES, OCCUPATIONS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
+  SELECT num 
+  FROM DEPARTMENTS 
+  WHERE name = 'RESEARCH'
+)
+
+UNION
+
+SELECT OCCUPATIONS.name 
+FROM EMPLOYEES, OCCUPATIONS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
+  SELECT num 
+  FROM DEPARTMENTS 
+  WHERE name = 'SALES'
+);
+
 -- 13) Repeat the last query showing the repeated results (union all).
 
 (SELECT OCCUPATIONS.name 
@@ -129,5 +149,114 @@ SELECT EMPLOYEES.surname, OCCUPATIONS.name, DEPARTMENTS.name
 FROM EMPLOYEES, OCCUPATIONS, DEPARTMENTS
 WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND DEPARTMENTS.name = "SALES" AND EMPLOYEES.dept_num = 30;
 
--- 
+-- 16) Display the number of employees and occupations of the employees of the 'SALES' department. 
+
+-- Con esta lo he pasado peor que el Quijote en un parque eólico.
+-- No sé si es tan complicada.
+
+WITH SUBQUERY(occu_code) AS (SELECT occu_code 
+FROM EMPLOYEES, DEPARTMENTS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND DEPARTMENTS.name = "SALES"
+)
+SELECT OCCUPATIONS.name, COUNT(occu_code) AS NumEmployees
+FROM SUBQUERY, OCCUPATIONS
+WHERE SUBQUERY.occu_code = OCCUPATIONS.code
+GROUP BY OCCUPATIONS.name;
+
+-- 17) Display the number of employees of each department whose profession is "EMPLOYEE".
+
+
+
+
+-- 18) Display the department names and the count of employees working into them. 
+
+SELECT DEPARTMENTS.name, COUNT(*) AS NumEmployees
+FROM EMPLOYEES, DEPARTMENTS
+WHERE  DEPARTMENTS.num = EMPLOYEES.dept_num
+GROUP BY dept_num;
+
+-- 19) Display the maximum number of employees of all the departments. In other words, find the maximum value of the column showing the maximum number of employees in the previous exercise. (clue: you need exercise 18 as a subquery and you should use MAX function). 
+
+WITH SUBQUERY(name, NumEmployees) AS (
+    SELECT DEPARTMENTS.name, COUNT(*) AS NumEmployees
+    FROM EMPLOYEES, DEPARTMENTS
+    WHERE  DEPARTMENTS.num = EMPLOYEES.dept_num
+    GROUP BY dept_num)
+
+SELECT MAX(NumEmployees) AS MaxEmployees
+FROM SUBQUERY;
+
+-- 20) Show the departments whose average salary is greater than the average of salaries of all employees. 
+
+WITH SUBQUERY(Employ_AVG_Salary) AS (
+
+    SELECT AVG(salary)
+    FROM EMPLOYEES)
+
+SELECT DEPARTMENTS.name, AVG(EMPLOYEES.SALARY) AS Depart_AVG_Salary
+FROM EMPLOYEES, DEPARTMENTS, SUBQUERY
+WHERE AVG(EMPLOYEES.SALARY) > Employ_AVG_Salary
+GROUP BY DEPARTMENTS.name;
+
+
+-- scalar
+
+SELECT DEPARTMENTS.name, (SELECT AVG(salary) 
+    FROM EMPLOYEES) AS Employ_AVG_Salary,  
+    AVG(EMPLOYEES.SALARY) AS Depart_AVG_Salary
+FROM EMPLOYEES, DEPARTMENTS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num
+GROUP BY DEPARTMENTS.name
+HAVING Depart_AVG_Salary > Employ_AVG_Salary;
+
+-- 21) Display the name of the department with more employees and its number of employees. Option 1: combine “having” and a subselect. In case of a tie, this option will show all the departments with a maximum number of employees.
+
+-- Option 2
+
+SELECT DEPARTMENTS.name, COUNT(*) AS NumEmployees
+FROM EMPLOYEES, DEPARTMENTS
+WHERE  DEPARTMENTS.num = EMPLOYEES.dept_num
+GROUP BY DEPARTMENTS.name
+ORDER BY NumEmployees DESC
+LIMIT 1;
+
+-- Option 1
+
+SELECT DEPARTMENTS.name, COUNT(*) AS NumEmployees
+FROM EMPLOYEES, DEPARTMENTS
+WHERE  DEPARTMENTS.num = EMPLOYEES.dept_num
+GROUP BY DEPARTMENTS.name
+HAVING COUNT(*) = (
+  SELECT MAX(NumEmployees)
+  FROM (
+    SELECT COUNT(*) AS NumEmployees
+    FROM EMPLOYEES
+    GROUP BY dept_num
+  ) AS SUBQUERY
+);
+
+-- 22) Repeat 12 changing “union” for “intersect”. 
+
+SELECT OCCUPATIONS.name 
+FROM EMPLOYEES, OCCUPATIONS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
+  SELECT num 
+  FROM DEPARTMENTS 
+  WHERE name = 'RESEARCH'
+)
+
+INTERSECT
+
+SELECT OCCUPATIONS.name 
+FROM EMPLOYEES, OCCUPATIONS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
+  SELECT num 
+  FROM DEPARTMENTS 
+  WHERE name = 'SALES'
+);
+
+-- 23) Repeat 22 but do not use the intersect operator to query the same data (clue: IN operator).
+
+
+
 
