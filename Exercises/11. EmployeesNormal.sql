@@ -185,7 +185,6 @@ WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND DEPARTMENTS.name = "SALES" AND 
 
 -- 16) Display the number of employees and occupations of the employees of the 'SALES' department. 
 
--- Con esta lo he pasado peor que el Quijote en un parque eólico.
 -- No sé si es tan complicada.
 
 WITH SUBQUERY(occu_code) AS (SELECT occu_code 
@@ -195,6 +194,14 @@ WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND DEPARTMENTS.name = "SALES"
 SELECT OCCUPATIONS.name, COUNT(occu_code) AS NumEmployees
 FROM SUBQUERY, OCCUPATIONS
 WHERE SUBQUERY.occu_code = OCCUPATIONS.code
+GROUP BY OCCUPATIONS.name;
+
+-- Efectivamente no es tan complicada, solución más sencilla:
+
+SELECT OCCUPATIONS.name, COUNT(EMPLOYEES.num) Num_Emp FROM EMPLOYEES, OCCUPATIONS, DEPARTMENTS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+EMPLOYEES.dept_num = DEPARTMENTS.num AND 
+DEPARTMENTS.name='SALES' 
 GROUP BY OCCUPATIONS.name;
 
 -- 17) Display the number of employees of each department whose profession is "EMPLOYEE".
@@ -323,3 +330,11 @@ FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
 WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
 EMPLOYEES.occu_code = OCCUPATIONS.code AND 
 DEPARTMENTS.name = "SALES");
+
+-- 24) Display the number of employee and occupation of the employees of the 'SALES' department.
+
+SELECT EMPLOYEES.num, OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND
+EMPLOYEES.dept_num = DEPARTMENTS.num AND
+DEPARTMENTS.name = "SALES";
