@@ -67,7 +67,7 @@ GROUP BY dept_num;
 SELECT dept_num, occu_code, COUNT(*) as NumEmployees
 FROM EMPLOYEES
 GROUP BY dept_num, occu_code
-HAVING COUNT(*) > 2;
+HAVING NumEmployees > 2;
 
 -- 10) Displays a query that is the union between the table OCCUPATIONS and TOWNS.
 
