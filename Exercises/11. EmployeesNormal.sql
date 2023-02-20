@@ -93,17 +93,27 @@ ORDER BY name;
 
 -- 12) Select the occupation names of all the employees of the department with name ‘RESEARCH’ and do the union of this query with the selection of the occupation names of the employees of the department with name ‘SALES’. Use the union operator. 
 
-(SELECT OCCUPATIONS.name 
-FROM OCCUPATIONS, DEPARTMENTS
-WHERE DEPARTMENTS.name = "RESEARCH")
+-- Las dos formas están bien
+
+-- Vista en clase
+
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "RESEARCH")
 
 UNION
 
-(SELECT OCCUPATIONS.name 
-FROM OCCUPATIONS, DEPARTMENTS
-WHERE DEPARTMENTS.name = "SALES");
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "SALES");
 
--- EL DE ARRIBA ESTÁ MAL
+---------------------------------------------------
+
+-- Mía
 
 SELECT OCCUPATIONS.name 
 FROM EMPLOYEES, OCCUPATIONS 
@@ -125,15 +135,39 @@ WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
 
 -- 13) Repeat the last query showing the repeated results (union all).
 
-(SELECT OCCUPATIONS.name 
-FROM OCCUPATIONS, DEPARTMENTS
-WHERE DEPARTMENTS.name = "RESEARCH")
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "RESEARCH")
 
 UNION ALL
 
-(SELECT OCCUPATIONS.name 
-FROM OCCUPATIONS, DEPARTMENTS
-WHERE DEPARTMENTS.name = "SALES");
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "SALES");
+
+-------------------------------------------------------
+
+SELECT OCCUPATIONS.name 
+FROM EMPLOYEES, OCCUPATIONS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
+  SELECT num 
+  FROM DEPARTMENTS 
+  WHERE name = 'RESEARCH'
+)
+
+UNION ALL
+
+SELECT OCCUPATIONS.name 
+FROM EMPLOYEES, OCCUPATIONS 
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
+  SELECT num 
+  FROM DEPARTMENTS 
+  WHERE name = 'SALES'
+);
 
 -- 14) Display the number of sellers in the 'SALES' department. 
 
@@ -165,8 +199,10 @@ GROUP BY OCCUPATIONS.name;
 
 -- 17) Display the number of employees of each department whose profession is "EMPLOYEE".
 
-
-
+SELECT DEPARTMENTS.name, COUNT(*) AS NumEmployees, OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE  DEPARTMENTS.num = EMPLOYEES.dept_num AND OCCUPATIONS.name = "EMPLOYEE" AND EMPLOYEES.occu_code = OCCUPATIONS.code
+GROUP BY dept_num;
 
 -- 18) Display the department names and the count of employees working into them. 
 
@@ -198,7 +234,6 @@ FROM EMPLOYEES, DEPARTMENTS, SUBQUERY
 WHERE AVG(EMPLOYEES.SALARY) > Employ_AVG_Salary
 GROUP BY DEPARTMENTS.name;
 
-
 -- scalar
 
 SELECT DEPARTMENTS.name, (SELECT AVG(salary) 
@@ -226,7 +261,7 @@ SELECT DEPARTMENTS.name, COUNT(*) AS NumEmployees
 FROM EMPLOYEES, DEPARTMENTS
 WHERE  DEPARTMENTS.num = EMPLOYEES.dept_num
 GROUP BY DEPARTMENTS.name
-HAVING COUNT(*) = (
+HAVING NumEmployees = (
   SELECT MAX(NumEmployees)
   FROM (
     SELECT COUNT(*) AS NumEmployees
@@ -236,6 +271,23 @@ HAVING COUNT(*) = (
 );
 
 -- 22) Repeat 12 changing “union” for “intersect”. 
+
+
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "RESEARCH")
+
+INTERSECT
+
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "SALES");
+
+-------------------------------------------------------
 
 SELECT OCCUPATIONS.name 
 FROM EMPLOYEES, OCCUPATIONS 
@@ -257,6 +309,17 @@ WHERE EMPLOYEES.occu_code = OCCUPATIONS.code AND dept_num = (
 
 -- 23) Repeat 22 but do not use the intersect operator to query the same data (clue: IN operator).
 
+SELECT DISTINCT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "RESEARCH" AND
+OCCUPATIONS.name
 
+IN 
 
-
+(SELECT OCCUPATIONS.name
+FROM EMPLOYEES, DEPARTMENTS, OCCUPATIONS
+WHERE EMPLOYEES.dept_num = DEPARTMENTS.num AND
+EMPLOYEES.occu_code = OCCUPATIONS.code AND 
+DEPARTMENTS.name = "SALES");
