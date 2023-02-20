@@ -77,7 +77,27 @@ WHERE EXISTS (SELECT name
 
 -- 6) For each person, find all pizzas the person eats that are not served by any pizzeria the person frequents. Return all such person (name) / pizza pairs. Solve it using the same approach we used with relational algebra. Then solve it using “exists” and/or “not exists”.
 
+(SELECT name, pizza
+FROM Eats
+WHERE EXISTS (SELECT name 
+              FROM Frequents
+              WHERE Eats.name = Frequents.name))
 
+EXCEPT
+
+-- Primera parte es correcta. Falla la de abajo.
+
+(SELECT Frequents.name, Serves.pizza FROM Frequents, Serves WHERE Frequents.pizzeria = Serves.pizzeria);
+
+
+
+
+
+(SELECT Eats.name, Eats.pizza FROM Eats, Frequents WHERE Eats.name = Frequents.name)
+
+EXCEPT
+
+(SELECT Frequents.name, Serves.pizza FROM Frequents, Serves WHERE Frequents.pizzeria = Serves.pizzeria);
 
 
 
