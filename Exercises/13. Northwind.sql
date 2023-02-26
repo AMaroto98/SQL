@@ -120,14 +120,14 @@ GROUP BY Categories.CategoryID, Categories.CategoryName
 ORDER BY SalesAmount DESC
 LIMIT 4;
 
-+------------+----------------+--------------+
-| CategoryID | CategoryName   | salesAmount  |
-+------------+----------------+--------------+
-|          1 | Beverages      | 5026492.8675 |
-|          4 | Dairy Products | 4406691.9780 |
-|          6 | Meat/Poultry   | 3119924.0475 |
-|          3 | Confections    | 3104487.7695 |
-+------------+----------------+--------------+
++------------+----------------+-------------+
+| CategoryID | CategoryName   | SalesAmount |
++------------+----------------+-------------+
+|          1 | Beverages      | 558499.2075 |
+|          4 | Dairy Products | 489632.4420 |
+|          6 | Meat/Poultry   | 346658.2275 |
+|          3 | Confections    | 344943.0855 |
++------------+----------------+-------------+
 
 -- 7) Number of products by category. Order by number of products, descending. Show the first four lines.
 
@@ -294,10 +294,11 @@ LIMIT 10;
 
 -- 16) Products above average price (ordered by price descendent).
 
-Productos por encima del precio medio (ordenados por precio descendente).
-
 SELECT ProductName
 FROM Products
+WHERE UnitPrice > (SELECT AVG(UnitPrice)
+FROM Products)
+ORDER BY UnitPrice DESC;
 
 +---------------------------------+
 | ProductName                     |
@@ -328,7 +329,10 @@ FROM Products
 | Ikura                           |
 | Uncle Bob s Organic Dried Pears |
 +---------------------------------+
+
+
 -- 17) Describe what the following query does. 
+
 select 
   C.CategoryID,
   case 
@@ -346,7 +350,16 @@ where P.SupplierID=S.SupplierID
   and C.CategoryID=P.CategoryID
 group by C.CategoryID, supplier_continent;
 
+
 -- 18) Top 10 suppliers with more products in our system ordered by number of products descendent and company name ascendent. Show the first four lines.
+
+SELECT CompanyName, COUNT(ProductID) AS NumberProducts
+FROM Suppliers, Products
+WHERE Suppliers.SupplierID = Products.SupplierID
+GROUP BY Suppliers.CompanyName
+ORDER BY NumberProducts DESC, CompanyName ASC
+LIMIT 4;
+
 +---------------------------------+--------------+
 | CompanyName                     | num_products |
 +---------------------------------+--------------+
@@ -356,14 +369,26 @@ group by C.CategoryID, supplier_continent;
 | Specialty Biscuits, Ltd.        |            4 |
 +---------------------------------+--------------+
 
-19.- Number of customers from Barcelona. 
+-- 19) Number of customers from Barcelona.
+
+SELECT COUNT(*) AS CustomersFromBCN
+FROM Customers
+WHERE City = "Barcelona";
+
 +--------------------+
 | customers_from_BCN |
 +--------------------+
 |                  1 |
 +--------------------+
 
-20.- Make a complete list of customers with more than 25 orders placed.
+-- 20) Make a complete list of customers with more than 25 orders placed.
+
+SELECT CompanyName, COUNT(*) AS NumOrders
+FROM Customers, Orders
+WHERE Customers.CustomerID = Orders.CustomerID
+GROUP BY Customers.CompanyName
+HAVING NumOrders > 25;
+
 +--------------------+------------+
 | CompanyName        | num_orders |
 +--------------------+------------+
@@ -372,15 +397,28 @@ group by C.CategoryID, supplier_continent;
 | Save-a-lot Markets |         31 |
 +--------------------+------------+ 
 
-21.- Customer who has placed the maximum number of orders. 
+-- 21) Customer who has placed the maximum number of orders.
+
+SELECT CompanyName, COUNT(*) AS NumOrders
+FROM Customers, Orders
+WHERE Customers.CustomerID = Orders.CustomerID
+GROUP BY Customers.CompanyName
+ORDER BY NumOrders DESC
+LIMIT 1;
+
 +--------------------+------------+
 | CompanyName        | num_orders |
 +--------------------+------------+
 | Save-a-lot Markets |         31 |
 +--------------------+------------+
 
+-- 22) Make a list of shippers and the number of orders handled by each. The actual database does not correspond to the diagram at the beginning of this document. Sorry. 
 
-22.- Make a list of shippers and the number of orders handled by each. The actual database does not correspond to the diagram at the beginning of this document. Sorry. 
+SELECT ShipperID, CompanyName, Phone, COUNT(*)
+FROM Shippers, Orders
+WHERE Shippers.ShipperID = Orders.ShipVia
+GROUP BY ShipperID;
+
 +-----------+------------------+----------------+------------+
 | ShipperID | CompanyName      | Phone          | num_orders |
 +-----------+------------------+----------------+------------+
@@ -389,7 +427,16 @@ group by C.CategoryID, supplier_continent;
 |         3 | Federal Shipping | (503) 555-9931 |        255 |
 +-----------+------------------+----------------+------------+
 
-23. Make a list of the employees (full name) and for each employee show the number of times that employee has used each of the shippers. Order by number of orders (number of shipments). Descending. Show the first 4 results.
+-- 23) Make a list of the employees (full name) and for each employee show the number of times that employee has used each of the shippers. Order by number of orders (number of shipments). Descending. Show the first 4 results.
+
+SELECT Shippers.ShipperID, Shippers.CompanyName, Employees.FirstName, Employees.LastName, COUNT(*) AS TotalOrders
+FROM Shippers, Orders, Employees
+WHERE Shippers.ShipperID = Orders.ShipVia
+AND Employees.EmployeeID = Orders.EmployeeID
+GROUP BY Shippers.ShipperID, Shippers.CompanyName, Employees.FirstName, Employees.LastName
+ORDER BY COUNT(*) DESC
+LIMIT 4;
+
 +-----------+------------------+-----------+-----------+------------+
 | ShipperID | CompanyName      | FirstName | LastName  | num_orders |
 +-----------+------------------+-----------+-----------+------------+
@@ -399,26 +446,41 @@ group by C.CategoryID, supplier_continent;
 |         3 | Federal Shipping | Janet     | Leverling |         46 |
 +-----------+------------------+-----------+-----------+------------+
 
-24. Make a list of products that are out of stock.
+-- 24) Make a list of products that are out of stock.
+
+SELECT ProductID, ProductName
+FROM Products
+WHERE UnitsInStock = 0;
+
 +-----------+------------------------+
 | ProductId | ProductName            |
 +-----------+------------------------+
-|         5 | Chef Anton's Gumbo Mix |
+|         5 | Chef Anton s Gumbo Mix |
 |        17 | Alice Mutton           |
 |        29 | Thringer Rostbratwurst |
 |        31 | Gorgonzola Telino      |
 |        53 | Perth Pasties          |
 +-----------+------------------------+
 
+-- 25) Make a list of products that are out of stock and have not been discontinued. Include the suppliers’ names. 
 
-25. Make a list of products that are out of stock and have not been discontinued. Include the suppliers’ names. 
+SELECT Products.ProductID, Products.ProductName, Suppliers.CompanyName
+FROM Products, Suppliers
+WHERE Products.SupplierID = Suppliers.SupplierID
+AND (UnitsInStock = 0 AND Discontinued = "%0");
+
 +-----------+-------------------+-------------------------+
 | ProductId | ProductName       | CompanyName             |
 +-----------+-------------------+-------------------------+
 |        31 | Gorgonzola Telino | Formaggi Fortini s.r.l. |
 +-----------+-------------------+-------------------------+
 
-26.- Make a list of products that need to be re-ordered i.e. where the units in stock (the number you have) and the units on order (the number you have coming) is less than the reorder level (the number that prompts you to order more). 
+-- 26) Make a list of products that need to be re-ordered i.e. where the units in stock (the number you have) and the units on order (the number you have coming) is less than the reorder level (the number that prompts you to order more). 
+
+SELECT ProductID, ProductName, UnitsInStock, UnitsOnOrder, ReorderLevel
+FROM Products
+WHERE (UnitsInStock + UnitsOnOrder) < ReorderLevel;
+
 +-----------+-----------------------+--------------+--------------+--------------+
 | ProductId | ProductName           | UnitsInStock | UnitsOnOrder | ReorderLevel |
 +-----------+-----------------------+--------------+--------------+--------------+
@@ -426,7 +488,10 @@ group by C.CategoryID, supplier_continent;
 |        70 | Outback Lager         |           15 |           10 |           30 |
 +-----------+-----------------------+--------------+--------------+--------------+
 
-27. Top 4 orders with bigger discount (as an amount).
+-- 27) Top 4 orders with bigger discount (as an amount).
+
+SELECT 
+
 +---------+-----------+-----------------+------------------------+
 | OrderID | subtotal  | discount_amount | subtotal_with_discount |
 +---------+-----------+-----------------+------------------------+
