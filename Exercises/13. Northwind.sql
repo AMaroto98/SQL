@@ -490,7 +490,17 @@ WHERE (UnitsInStock + UnitsOnOrder) < ReorderLevel;
 
 -- 27) Top 4 orders with bigger discount (as an amount).
 
-SELECT 
+WITH SUBQUERY(OrderID, Subtotal, SubtotalWithDiscount) AS (
+      SELECT OrderID, 
+      (UnitPrice * Quantity) AS Subtotal, 
+      (UnitPrice * Quantity * (1 - Discount)) AS SubtotalWithDiscount
+      FROM OrderDetails
+)
+
+SELECT OrderID, Subtotal, (Subtotal - SubtotalWithDiscount) AS DiscountAmout, SubtotalWithDiscount
+FROM SUBQUERY
+ORDER BY DiscountAmout DESC
+LIMIT 4;
 
 +---------+-----------+-----------------+------------------------+
 | OrderID | subtotal  | discount_amount | subtotal_with_discount |
@@ -500,5 +510,6 @@ SELECT
 |   11077 | 2680.4700 |        262.9770 |              2417.4930 |
 |   10292 | 2527.2000 |        252.7200 |              2274.4800 |
 +---------+-----------+-----------------+------------------------+
+
  
 
