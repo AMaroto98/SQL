@@ -333,22 +333,29 @@ ORDER BY UnitPrice DESC;
 
 -- 17) Describe what the following query does. 
 
-select 
+SELECT 
   C.CategoryID,
-  case 
-    when S.Country in 
+  CASE 
+    WHEN S.Country IN 
       ('UK','Spain','Sweden','Germany','Norway', 
       'Denmark','Netherlands','Finland','Italy','France') 
-    then 'Europe' 
-    when S.Country in ('USA','Canada','Brazil') 
-    then 'America' 
-    else 'Asia-Pacific' 
-  end as supplier_continent,
-  sum(P.UnitsInStock) as UnitsInStock
-from Suppliers S, Products P, Categories C 
-where P.SupplierID=S.SupplierID 
-  and C.CategoryID=P.CategoryID
-group by C.CategoryID, supplier_continent;
+    THEN 'Europe' 
+    WHEN S.Country IN ('USA','Canada','Brazil') 
+    THEN 'America' 
+    ELSE 'Asia-Pacific' 
+  END AS supplier_continent,
+  sum(P.UnitsInStock) AS UnitsInStock
+FROM Suppliers S, Products P, Categories C 
+WHERE P.SupplierID=S.SupplierID 
+  AND C.CategoryID=P.CategoryID
+GROUP BY C.CategoryID, supplier_continent;
+
+-- Lo que hace la query es: Clasficar los proveedores según su cotinente y mostrar el número de unidades en stock que hay.
+
+-- Primero clasifica por continentes con el Case.
+-- Segundo suma las unidades en Stock.
+-- Tercero selecciona las tablas, hace un producto cartesino y las iguala para eliminar rows innecesarias.
+-- Por último agrupa por categoria y continente del proveedor.
 
 
 -- 18) Top 10 suppliers with more products in our system ordered by number of products descendent and company name ascendent. Show the first four lines.
@@ -490,16 +497,13 @@ WHERE (UnitsInStock + UnitsOnOrder) < ReorderLevel;
 
 -- 27) Top 4 orders with bigger discount (as an amount).
 
-WITH SUBQUERY(OrderID, Subtotal, SubtotalWithDiscount) AS (
-      SELECT OrderID, 
-      (UnitPrice * Quantity) AS Subtotal, 
-      (UnitPrice * Quantity * (1 - Discount)) AS SubtotalWithDiscount
-      FROM OrderDetails
-)
-
-SELECT OrderID, Subtotal, (Subtotal - SubtotalWithDiscount) AS DiscountAmout, SubtotalWithDiscount
-FROM SUBQUERY
-ORDER BY DiscountAmout DESC
+SELECT OrderID, 
+       SUM(UnitPrice * Quantity) AS Subtotal, 
+       SUM(UnitPrice * Quantity * Discount) AS DiscountAmount, 
+       SUM(UnitPrice * Quantity * (1 - Discount)) AS SubtotalWithDiscount
+FROM OrderDetails 
+GROUP BY OrderID 
+ORDER BY DiscountAmount DESC 
 LIMIT 4;
 
 +---------+-----------+-----------------+------------------------+
