@@ -5,12 +5,27 @@ FROM Frequents, Person
 WHERE Person.age < 18 AND 
 Frequents.name = Person.name;
 
++----------------+
+| pizzeria       |
++----------------+
+| Pizza Hut      |
+| Straw Hat      |
+| New York Pizza |
++----------------+
+
 -- 2) Find the names of all females who eat either mushroom or pepperoni pizza (or both).
 
 SELECT DISTINCT Person.name 
 FROM Person, Eats 
 WHERE (Person.gender = "female" AND (Eats.pizza = "mushroom" OR Eats.pizza = "pepperoni")) AND 
 Eats.name = Person.name;
+
++------+
+| name |
++------+
+| Amy  |
+| Fay  |
++------+
 
 -- 3) Find the names of all females who eat both mushroom and pepperoni pizza. Solve it using the same approach we used with relational algebra. Then solve it using “exists” and/or “not exists”.
 
@@ -28,6 +43,12 @@ AND EXISTS (SELECT name
             WHERE Eats.name = Person.name
             AND pizza = "pepperoni");
 
++------+
+| name |
++------+
+| Amy  |
++------+
+
 -- 4) Find all pizzerias that serve at least one pizza that Amy eats for less than $10.00. Solve it using the same approach we used with relational algebra. Then solve it using “exists” and/or “not exists”.
 
 SELECT pizzeria 
@@ -36,7 +57,15 @@ WHERE price < 10
 AND EXISTS (SELECT name 
             FROM Eats
             WHERE name = "Amy" 
-            AND Serves.pizza = Eats.pizza)
+            AND Serves.pizza = Eats.pizza);
+
++----------------+
+| pizzeria       |
++----------------+
+| Little Caesars |
+| Straw Hat      |
+| New York Pizza |
++----------------+
 
 -- 5) Find all pizzerias that are frequented by only females or only males.
 
@@ -73,7 +102,15 @@ FROM Frequents
 WHERE EXISTS (SELECT name
               FROM Person
               WHERE Person.gender = "female"
-              AND Person.name = Frequents.name)))
+              AND Person.name = Frequents.name)));
+
++----------------+
+| pizzeria       |
++----------------+
+| Little Caesars |
+| Chicago Pizza  |
+| New York Pizza |
++----------------+
 
 -- 6) For each person, find all pizzas the person eats that are not served by any pizzeria the person frequents. Return all such person (name) / pizza pairs. Solve it using the same approach we used with relational algebra. Then solve it using “exists” and/or “not exists”.
 
@@ -87,8 +124,15 @@ WHERE NOT EXISTS (
     AND Frequents.name = Eats.name
 );
 
--- 7) Find the names of all people who frequent only pizzerias serving at least one pizza they eat. Solve it using the same approach we used with relational algebra. Then solve it using “exists” and/or “not exists”.
++------+----------+
+| name | pizza    |
++------+----------+
+| Amy  | mushroom |
+| Dan  | mushroom |
+| Gus  | mushroom |
++------+----------+
 
+-- 7) Find the names of all people who frequent only pizzerias serving at least one pizza they eat. Solve it using the same approach we used with relational algebra. Then solve it using “exists” and/or “not exists”.
 
 SELECT name 
 FROM Person 
@@ -123,3 +167,9 @@ SELECT Eats.name, Serves.pizzeria FROM Eats, Serves WHERE Eats.pizza = Serves.pi
 
 SELECT pizzeria FROM Serves WHERE price IN (SELECT MIN(price) FROM Serves WHERE pizza = 'pepperoni') AND pizza = 'pepperoni';
 
++----------------+
+| pizzeria       |
++----------------+
+| Straw Hat      |
+| New York Pizza |
++----------------+
