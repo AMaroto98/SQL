@@ -17,7 +17,6 @@ from (
 
 
 
-
 SELECT dept_name, avg_salary
 from (
     select dept_name, avg(salary) 
@@ -171,10 +170,6 @@ GROUP BY building;
 
 
 
-
-
-
-
 ------------------------------------------------------------------------
 DELETE
 FROM instructor
@@ -230,6 +225,8 @@ SET tot_cred = (SELECT SUM(credits)
                 GROUP BY student.ID);
 
 
+-- Esta está mal, no es específicamente lo que se pedía.
+
 UPDATE student
 SET tot_cred = (SELECT SUM(credits)
                 FROM takes, course
@@ -241,7 +238,6 @@ SET tot_cred = (SELECT SUM(credits)
 WHERE tot_cred IS NULL;
 
 -- CON UN IF
-
 UPDATE student
 SET tot_cred = (SELECT IF (SUM(course.credits) IS NOT NULL, SUM(course.credits), 0)
                 FROM takes, course
@@ -253,22 +249,21 @@ SET tot_cred = (SELECT IF (SUM(course.credits) IS NOT NULL, SUM(course.credits),
 
 
 -- CON UN CASE
+UPDATE student
+SET tot_cred = (SELECT CASE
+                WHEN sum(C.credits) IS NOT NULL THEN sum(C.credits)
+                ELSE 0
+                END
+                FROM takes T, course C
+                WHERE student.ID=T.ID
+                AND T.course_id=C.course_id
+                AND T.grade<>'F'
+                AND T.grade IS NOT NULL
+                );
 
-  update student
-set tot_cred=(
-  select case
-    when sum(C.credits) is not null then sum(C.credits)
-    else 0
-  end
-  from takes T, course C
-  where student.ID=T.ID
-  and T.course_id=C.course_id
-  and T.grade<>'F'
-  and T.grade is not null
-  );
-
-  -- CON coalesce function...
-
+  -- CON COALESCE function... 
+  -- La función COALESCE en SQL se utiliza para seleccionar el primer valor no nulo de una lista de expresiones o valores.
+  -- En lugar de nulo saldrá 0.
 UPDATE student
 SET tot_cred = (SELECT COALESCE(SUM(credits), 0) 
                 FROM takes, course
