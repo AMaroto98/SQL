@@ -271,3 +271,71 @@ SET tot_cred = (SELECT COALESCE(SUM(credits), 0)
                 AND student.ID = takes.ID
                 AND takes.grade <> "F"
                 AND takes.grade IS NOT NULL);
+
+
+--------------------------------------------------------------------------
+
+-- SQL INTERMEDIO
+
+-- Ejemplos de Join
+SELECT name, building
+FROM instructor JOIN department
+ON instructor.dept_name = department.dept_name;
+
+SELECT name
+FROM instructor JOIN department
+ON instructor.dept_name = department.dept_name
+AND building = "Taylor";
+
+-- Natural Join (No hace falta igualar las tablas)
+-- Mismo ejemplo de antes con el natural Join
+-- Existe pero no se usa.
+
+SELECT name
+FROM instructor NATURAL JOIN department
+WHERE building = "Taylor";
+
+SELECT name, grade
+FROM student NATURAL JOIN course NATURAL JOIN takes
+WHERE grade = "A";
+
+-- Peligro del NATURAL JOIN 
+
+select name, title
+from student natural join takes, course
+where takes.course_id = course.course_id;
+
+select name, title
+from student natural join takes natural join course;
+
+-- La query no coge los alumnos que pertenecen a un departamento pero cursan un curso de otro departamento.
+
+-- NO dan el mismo resultado. Esta pregunta puede caer en un examen tipo test, yo veo a Jaume capaz.
+
+SELECT name, title
+FROM student JOIN takes 
+ON student.ID = takes.ID
+JOIN course
+ON course.course_id = takes.course_id;
+
+-- Para no tener peridas de información se usa el OUTER JOIN
+
+-- En la siguiente query no salen los NULLS
+
+SELECT *
+FROM instructor JOIN department
+ON instructor.dept_name = department.dept_name;
+
+-- Y AQUI SI SALE
+
+SELECT *
+FROM instructor RIGHT OUTER JOIN department
+ON instructor.dept_name = department.dept_name;
+
+SELECT *
+FROM instructor LEFT OUTER JOIN department
+ON instructor.dept_name = department.dept_name;
+
+-- LEFT : TODAS LAS LINEAS DE LA TABLA DE LA IZQUIERDA, PRIMERA QUE APARECE
+
+-- RIGHT : TODAS LAS LINEAS DE LA TABLA DE LA DERECHA, SEGUNDA QUE APARECE
