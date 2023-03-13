@@ -339,3 +339,29 @@ ON instructor.dept_name = department.dept_name;
 -- LEFT : TODAS LAS LINEAS DE LA TABLA DE LA IZQUIERDA, PRIMERA QUE APARECE
 
 -- RIGHT : TODAS LAS LINEAS DE LA TABLA DE LA DERECHA, SEGUNDA QUE APARECE
+
+
+-- MariaDB no soporta FULL OUTER JOIN 
+
+
+
+-- Mirar cuantas views tengo guardadas!
+
+SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.VIEWS
+WHERE TABLE_SCHEMA = 'University';
+
+-- MariaDB no soporta Materialized Views.
+
+-- UPDATE A VIEW
+
+-- Si hago un update de una view funciona si solo tiene una tablas
+-- Si hay dos tablas relacionadas puede petar
+-- La inserción de vistas funciona a veces, esa es la idea que Jaume quiere que nos quedemos.
+
+
+-- TRANSACTIONS
+
+-- La transacción se empiza con el begin;
+-- Con el commit guardamos los cambios para siempre
+-- Rollback, deshace lo que se ha hecho, como en los servidores del WOW.
