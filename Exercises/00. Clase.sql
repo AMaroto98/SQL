@@ -362,6 +362,15 @@ WHERE TABLE_SCHEMA = 'University';
 
 -- TRANSACTIONS
 
--- La transacción se empiza con el begin;
+-- La transacción se empiza con el begin; o un start transaction;
 -- Con el commit guardamos los cambios para siempre
 -- Rollback, deshace lo que se ha hecho, como en los servidores del WOW.
+
+-- se pueden hacer savepoint <nombre> para que cuando hagamos rollback volvamos ahí.
+-- rollback to <nombre del savepoint>
+
+-- dentro de las transaciones solo puedo hacer update y poco más, cualquier otra cosa hace commit instantaneo
+
+set autocommit=off;
+
+-- Con el comando anterior se pueden borrar tablas en transactions y hacer un rollback.
