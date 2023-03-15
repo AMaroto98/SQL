@@ -374,3 +374,33 @@ WHERE TABLE_SCHEMA = 'University';
 set autocommit=off;
 
 -- Con el comando anterior se pueden borrar tablas en transactions y hacer un rollback.
+
+-- Integrity Constraint 
+
+CREATE TABLE Chicote (
+    name VARCHAR(25) NOT NULL,
+    telephone VARCHAR(12) NOT NULL,
+    countryCode VARCHAR(5),
+    localNumber VARCHAR(3),
+    UNIQUE (countryCode, localNumber)
+);
+
+INSERT INTO Chicote VALUES ("Xoxo2", "3456789", NULL, NULL);
+
+
+create table section
+(course_id varchar (8),
+sec_id varchar (8),
+semester varchar (6),
+year numeric (4,0),
+building varchar (15),
+room_number varchar (7),
+time_slot_id varchar (4),
+primary key (course_id, sec_id, semester, year),
+check (semester in ('Fall', 'Winter', 'Spring', 'Summer')));
+
+-- NO funciona
+insert into section (semester, course_id, sec_id, year) VALUES ("Chicote", "mojon", "pito", 2030);
+
+-- Si funciona
+insert into section (semester, course_id, sec_id, year) VALUES ("Fall", "mojon", "pito", 2030);
