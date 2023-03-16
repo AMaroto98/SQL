@@ -64,11 +64,22 @@ INSERT INTO EMPLOYEES VALUES (9999, 'FERNÁNDEZ', 'MIGUEL', NULL, '2019-01-01', 
 
 -- Se modifica debido a que las Views no guardan la información de la consulta, si no la query en si, por lo que si se modifica la información y vuelve a seleccionar la consulta los datos salen modificados.
 
-
 -- 4. Create a view (with name V_EMPLOYEES) that shows all the employees columns with the name of their occupation name instead of the occupation code and the name of their department instead of the department number. 
 
-MariaDB [views]> select * from V_EMPLOYEES;
-MariaDB [views]> select * from V_EMPLOYEES;
+CREATE VIEW V_DEPARTMENTS AS 
+    SELECT 
+    EMPLOYEES.num,
+    EMPLOYEES.name,
+    EMPLOYEES.surname,
+    DEPARTMENTS.name AS DepartName,
+    OCCUPATIONS.name AS OccupationName,
+    EMPLOYEES.start_date, 
+    EMPLOYEES.salary, 
+    EMPLOYEES.commission
+    FROM EMPLOYEES
+    LEFT OUTER JOIN DEPARTMENTS ON EMPLOYEES.dept_num = DEPARTMENTS.num
+    LEFT OUTER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code;
+
 +------+------------+----------+---------+------------+--------+------------+-----------------+----------+
 | num  | surname    | E_name   | manager | start_date | salary | commission | D_name          | O_name   |
 +------+------------+----------+---------+------------+--------+------------+-----------------+----------+
@@ -89,13 +100,13 @@ MariaDB [views]> select * from V_EMPLOYEES;
 | 8001 | RUIZ       | FERNANDA |    7839 | 1992-06-10 |   2885 |       NULL | RESEARCH        | MANAGER  |
 | 9999 | FERNÁNDEZ  | MIGUEL   |    NULL | 2019-01-01 |   9000 |       NULL | HUMAN RESOURCES | NULL     |
 +------+------------+----------+---------+------------+--------+------------+-----------------+----------+
-16 rows in set (0,003 sec)
+
+
+-- 5. Create a view (with name V_EMPLOYEES_FULL) using  V_EMPLOYEES that shows manager’s surname and name instead of manager num (you can NOT use the table EMPLOYEES you must use the view V_EMPLOYEES).
 
 
 
-5. Create a view (with name V_EMPLOYEES_FULL) using  V_EMPLOYEES that shows manager’s surname and name instead of manager num (you can NOT use the table EMPLOYEES you must use the view V_EMPLOYEES).
 
-MariaDB [views]> select * from V_EMPLOYEES_FULL;
 +------+------------+----------+----------------+------------+--------+------------+-----------------+----------+
 | num  | surname    | E_name   | M_surname_name | start_date | salary | commission | D_name          | O_name   |
 +------+------------+----------+----------------+------------+--------+------------+-----------------+----------+
