@@ -3,7 +3,7 @@
 -- Using an explicit inner join
 
 SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
-FROM EMPLOYEES JOIN OCCUPATIONS
+FROM EMPLOYEES INNER JOIN OCCUPATIONS
 ON EMPLOYEES.occu_code = OCCUPATIONS.code
 ORDER BY FullName;
 
@@ -24,10 +24,11 @@ ORDER BY FullName;
 | XAVIER JIMENO   |   1335 | EMPLOYEE |
 +-----------------+--------+----------+
 
+
 -- Using an implicit inner join
 
 SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
-FROM EMPLOYEES JOIN OCCUPATIONS
+FROM EMPLOYEES INNER JOIN OCCUPATIONS
 WHERE EMPLOYEES.occu_code = OCCUPATIONS.code
 ORDER BY FullName;
 
@@ -281,18 +282,18 @@ ORDER BY FullName;
 
 -- 5. Show the full names of the employees and occupation name whose occupation is neither "MANAGER" nor "EMPLOYEE" (=”occupation is not manager and is not employee”) and also have a salary higher than 2000.
 
-SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, OCCUPATIONS.name AS Occupation
 FROM EMPLOYEES JOIN OCCUPATIONS
 ON EMPLOYEES.occu_code = OCCUPATIONS.code 
 AND (OCCUPATIONS.name <> "MANAGER" OR "EMPLOYEE")
 AND (EMPLOYEES.salary > 2000);
 
-+----------------+---------+
-| FullName       | name    |
-+----------------+---------+
-| JAVIER GIL     | ANALYST |
-| ANA FERNÁNDEZ  | ANALYST |
-+----------------+---------+
++----------------+------------+
+| FullName       | Occupation |
++----------------+------------+
+| JAVIER GIL     | ANALYST    |
+| ANA FERNÁNDEZ  | ANALYST    |
++----------------+------------+
 
 -- 6. Show all the data of all the employees (show department name instead department code, occupation name instead occupation code and manager surname instead manager num). Make two versions:
 
@@ -305,7 +306,7 @@ EMPLOYEES.name,
 EMPLOYEES.surname,
 DEPARTMENTS.name AS DepartName,
 OCCUPATIONS.name AS OccupationName,
-EMPLOYEES.name AS ManagerName,
+EMPLOYEES.surname AS ManagerName,
 EMPLOYEES.start_date, 
 EMPLOYEES.salary, 
 EMPLOYEES.commission
