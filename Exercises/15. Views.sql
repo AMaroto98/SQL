@@ -66,7 +66,7 @@ INSERT INTO EMPLOYEES VALUES (9999, 'FERNÁNDEZ', 'MIGUEL', NULL, '2019-01-01', 
 
 -- 4. Create a view (with name V_EMPLOYEES) that shows all the employees columns with the name of their occupation name instead of the occupation code and the name of their department instead of the department number. 
 
-CREATE VIEW V_DEPARTMENTS AS 
+CREATE VIEW V_EMPLOYEES AS 
     SELECT 
     EMPLOYEES.num,
     EMPLOYEES.name,

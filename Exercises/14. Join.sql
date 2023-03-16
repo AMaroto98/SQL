@@ -2,182 +2,190 @@
 
 -- Using an explicit inner join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES JOIN OCCUPATIONS
-ON EMPLOYEES.occu_code = OCCUPATIONS.code;
+ON EMPLOYEES.occu_code = OCCUPATIONS.code
+ORDER BY FullName;
 
-+----------+--------+----------+
-| name     | salary | name     |
-+----------+--------+----------+
-| JAVIER   |   3000 | ANALYST  |
-| ANA      |   3000 | ANALYST  |
-| FERNANDO |   1430 | EMPLOYEE |
-| XAVIER   |   1335 | EMPLOYEE |
-| ANTONIA  |   1690 | EMPLOYEE |
-| JUDIT    |   2900 | MANAGER  |
-| ENRIQUE  |   2885 | MANAGER  |
-| FERNANDA |   2885 | MANAGER  |
-| MARTA    |   1500 | SALESMAN |
-| JOSEP    |   1625 | SALESMAN |
-| MONICA   |   1600 | SALESMAN |
-| LUIS     |   1350 | SALESMAN |
-+----------+--------+----------+
++-----------------+--------+----------+
+| FullName        | salary | name     |
++-----------------+--------+----------+
+| ANA FERNÁNDEZ   |   3000 | ANALYST  |
+| ANTONIA MUÑOZ   |   1690 | EMPLOYEE |
+| ENRIQUE COLOM   |   2885 | MANAGER  |
+| FERNANDA RUIZ   |   2885 | MANAGER  |
+| FERNANDO ALONSO |   1430 | EMPLOYEE |
+| JAVIER GIL      |   3000 | ANALYST  |
+| JOSEP AGUILO    |   1625 | SALESMAN |
+| JUDIT AROCA     |   2900 | MANAGER  |
+| LUIS TOVAR      |   1350 | SALESMAN |
+| MARTA ARROYO    |   1500 | SALESMAN |
+| MONICA MARTÍN   |   1600 | SALESMAN |
+| XAVIER JIMENO   |   1335 | EMPLOYEE |
++-----------------+--------+----------+
 
 -- Using an implicit inner join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES JOIN OCCUPATIONS
-WHERE EMPLOYEES.occu_code = OCCUPATIONS.code;
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code
+ORDER BY FullName;
 
-+----------+--------+----------+
-| name     | salary | name     |
-+----------+--------+----------+
-| JAVIER   |   3000 | ANALYST  |
-| ANA      |   3000 | ANALYST  |
-| FERNANDO |   1430 | EMPLOYEE |
-| XAVIER   |   1335 | EMPLOYEE |
-| ANTONIA  |   1690 | EMPLOYEE |
-| JUDIT    |   2900 | MANAGER  |
-| ENRIQUE  |   2885 | MANAGER  |
-| FERNANDA |   2885 | MANAGER  |
-| MARTA    |   1500 | SALESMAN |
-| JOSEP    |   1625 | SALESMAN |
-| MONICA   |   1600 | SALESMAN |
-| LUIS     |   1350 | SALESMAN |
-+----------+--------+----------+
++-----------------+--------+----------+
+| FullName        | salary | name     |
++-----------------+--------+----------+
+| ANA FERNÁNDEZ   |   3000 | ANALYST  |
+| ANTONIA MUÑOZ   |   1690 | EMPLOYEE |
+| ENRIQUE COLOM   |   2885 | MANAGER  |
+| FERNANDA RUIZ   |   2885 | MANAGER  |
+| FERNANDO ALONSO |   1430 | EMPLOYEE |
+| JAVIER GIL      |   3000 | ANALYST  |
+| JOSEP AGUILO    |   1625 | SALESMAN |
+| JUDIT AROCA     |   2900 | MANAGER  |
+| LUIS TOVAR      |   1350 | SALESMAN |
+| MARTA ARROYO    |   1500 | SALESMAN |
+| MONICA MARTÍN   |   1600 | SALESMAN |
+| XAVIER JIMENO   |   1335 | EMPLOYEE |
++-----------------+--------+----------+
 
 -- Using a left outer join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES LEFT OUTER JOIN OCCUPATIONS
-ON EMPLOYEES.occu_code = OCCUPATIONS.code;
+ON EMPLOYEES.occu_code = OCCUPATIONS.code
+ORDER BY FullName;
 
-+-----------+--------+----------+
-| name      | salary | name     |
-+-----------+--------+----------+
-| ANTONIO   |   2885 | NULL     |
-| SERGIO    |   1040 | NULL     |
-| MARTA     |   1500 | SALESMAN |
-| JOSEP     |   1625 | SALESMAN |
-| JUDIT     |   2900 | MANAGER  |
-| MONICA    |   1600 | SALESMAN |
-| BARTOLOME |   3005 | NULL     |
-| ENRIQUE   |   2885 | MANAGER  |
-| JAVIER    |   3000 | ANALYST  |
-| LUIS      |   1350 | SALESMAN |
-| FERNANDO  |   1430 | EMPLOYEE |
-| XAVIER    |   1335 | EMPLOYEE |
-| ANA       |   3000 | ANALYST  |
-| ANTONIA   |   1690 | EMPLOYEE |
-| FERNANDA  |   2885 | MANAGER  |
-+-----------+--------+----------+
++------------------+--------+----------+
+| FullName         | salary | name     |
++------------------+--------+----------+
+| ANA FERNÁNDEZ    |   3000 | ANALYST  |
+| ANTONIA MUÑOZ    |   1690 | EMPLOYEE |
+| ANTONIO BANDERAS |   2885 | NULL     |
+| BARTOLOME AMER   |   3005 | NULL     |
+| ENRIQUE COLOM    |   2885 | MANAGER  |
+| FERNANDA RUIZ    |   2885 | MANAGER  |
+| FERNANDO ALONSO  |   1430 | EMPLOYEE |
+| JAVIER GIL       |   3000 | ANALYST  |
+| JOSEP AGUILO     |   1625 | SALESMAN |
+| JUDIT AROCA      |   2900 | MANAGER  |
+| LUIS TOVAR       |   1350 | SALESMAN |
+| MARTA ARROYO     |   1500 | SALESMAN |
+| MONICA MARTÍN    |   1600 | SALESMAN |
+| SERGIO SÁNCHEZ   |   1040 | NULL     |
+| XAVIER JIMENO    |   1335 | EMPLOYEE |
++------------------+--------+----------+
 
 -- Using a right outer join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES RIGHT OUTER JOIN OCCUPATIONS
-ON EMPLOYEES.occu_code = OCCUPATIONS.code;
+ON EMPLOYEES.occu_code = OCCUPATIONS.code
+ORDER BY FullName;
 
-+----------+--------+-----------+
-| name     | salary | name      |
-+----------+--------+-----------+
-| JAVIER   |   3000 | ANALYST   |
-| ANA      |   3000 | ANALYST   |
-| FERNANDO |   1430 | EMPLOYEE  |
-| XAVIER   |   1335 | EMPLOYEE  |
-| ANTONIA  |   1690 | EMPLOYEE  |
-| JUDIT    |   2900 | MANAGER   |
-| ENRIQUE  |   2885 | MANAGER   |
-| FERNANDA |   2885 | MANAGER   |
-| NULL     |   NULL | PRESIDENT |
-| MARTA    |   1500 | SALESMAN  |
-| JOSEP    |   1625 | SALESMAN  |
-| MONICA   |   1600 | SALESMAN  |
-| LUIS     |   1350 | SALESMAN  |
-+----------+--------+-----------+
++-----------------+--------+-----------+
+| FullName        | salary | name      |
++-----------------+--------+-----------+
+| NULL            |   NULL | PRESIDENT |
+| ANA FERNÁNDEZ   |   3000 | ANALYST   |
+| ANTONIA MUÑOZ   |   1690 | EMPLOYEE  |
+| ENRIQUE COLOM   |   2885 | MANAGER   |
+| FERNANDA RUIZ   |   2885 | MANAGER   |
+| FERNANDO ALONSO |   1430 | EMPLOYEE  |
+| JAVIER GIL      |   3000 | ANALYST   |
+| JOSEP AGUILO    |   1625 | SALESMAN  |
+| JUDIT AROCA     |   2900 | MANAGER   |
+| LUIS TOVAR      |   1350 | SALESMAN  |
+| MARTA ARROYO    |   1500 | SALESMAN  |
+| MONICA MARTÍN   |   1600 | SALESMAN  |
+| XAVIER JIMENO   |   1335 | EMPLOYEE  |
++-----------------+--------+-----------+
 
 -- 2. Repeat the queries showing only employees whose salary is not between 1100 and 2000
 
 -- Using an explicit inner join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES JOIN OCCUPATIONS
-ON EMPLOYEES.occu_code = OCCUPATIONS.code 
-AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000;
+ON EMPLOYEES.occu_code = OCCUPATIONS.code
+AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000
+ORDER BY FullName;
 
-+----------+--------+---------+
-| name     | salary | name    |
-+----------+--------+---------+
-| JAVIER   |   3000 | ANALYST |
-| ANA      |   3000 | ANALYST |
-| JUDIT    |   2900 | MANAGER |
-| ENRIQUE  |   2885 | MANAGER |
-| FERNANDA |   2885 | MANAGER |
-+----------+--------+---------+
++----------------+--------+---------+
+| FullName       | salary | name    |
++----------------+--------+---------+
+| ANA FERNÁNDEZ  |   3000 | ANALYST |
+| ENRIQUE COLOM  |   2885 | MANAGER |
+| FERNANDA RUIZ  |   2885 | MANAGER |
+| JAVIER GIL     |   3000 | ANALYST |
+| JUDIT AROCA    |   2900 | MANAGER |
++----------------+--------+---------+
 
 -- Using an implicit inner join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES JOIN OCCUPATIONS
-WHERE EMPLOYEES.occu_code = OCCUPATIONS.code 
-AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000;
+WHERE EMPLOYEES.occu_code = OCCUPATIONS.code
+AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000
+ORDER BY FullName;
 
-+----------+--------+---------+
-| name     | salary | name    |
-+----------+--------+---------+
-| JAVIER   |   3000 | ANALYST |
-| ANA      |   3000 | ANALYST |
-| JUDIT    |   2900 | MANAGER |
-| ENRIQUE  |   2885 | MANAGER |
-| FERNANDA |   2885 | MANAGER |
-+----------+--------+---------+
++----------------+--------+---------+
+| FullName       | salary | name    |
++----------------+--------+---------+
+| ANA FERNÁNDEZ  |   3000 | ANALYST |
+| ENRIQUE COLOM  |   2885 | MANAGER |
+| FERNANDA RUIZ  |   2885 | MANAGER |
+| JAVIER GIL     |   3000 | ANALYST |
+| JUDIT AROCA    |   2900 | MANAGER |
++----------------+--------+---------+
 
 -- Using a left outer join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES LEFT OUTER JOIN OCCUPATIONS
-ON EMPLOYEES.occu_code = OCCUPATIONS.code 
-AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000;
+ON EMPLOYEES.occu_code = OCCUPATIONS.code
+AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000
+ORDER BY FullName;
 
-+-----------+--------+---------+
-| name      | salary | name    |
-+-----------+--------+---------+
-| ANTONIO   |   2885 | NULL    |
-| SERGIO    |   1040 | NULL    |
-| MARTA     |   1500 | NULL    |
-| JOSEP     |   1625 | NULL    |
-| JUDIT     |   2900 | MANAGER |
-| MONICA    |   1600 | NULL    |
-| BARTOLOME |   3005 | NULL    |
-| ENRIQUE   |   2885 | MANAGER |
-| JAVIER    |   3000 | ANALYST |
-| LUIS      |   1350 | NULL    |
-| FERNANDO  |   1430 | NULL    |
-| XAVIER    |   1335 | NULL    |
-| ANA       |   3000 | ANALYST |
-| ANTONIA   |   1690 | NULL    |
-| FERNANDA  |   2885 | MANAGER |
-+-----------+--------+---------+
++------------------+--------+---------+
+| FullName         | salary | name    |
++------------------+--------+---------+
+| ANA FERNÁNDEZ    |   3000 | ANALYST |
+| ANTONIA MUÑOZ    |   1690 | NULL    |
+| ANTONIO BANDERAS |   2885 | NULL    |
+| BARTOLOME AMER   |   3005 | NULL    |
+| ENRIQUE COLOM    |   2885 | MANAGER |
+| FERNANDA RUIZ    |   2885 | MANAGER |
+| FERNANDO ALONSO  |   1430 | NULL    |
+| JAVIER GIL       |   3000 | ANALYST |
+| JOSEP AGUILO     |   1625 | NULL    |
+| JUDIT AROCA      |   2900 | MANAGER |
+| LUIS TOVAR       |   1350 | NULL    |
+| MARTA ARROYO     |   1500 | NULL    |
+| MONICA MARTÍN    |   1600 | NULL    |
+| SERGIO SÁNCHEZ   |   1040 | NULL    |
+| XAVIER JIMENO    |   1335 | NULL    |
++------------------+--------+---------+
 
 -- Using a right outer join
 
-SELECT EMPLOYEES.name, EMPLOYEES.salary, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
 FROM EMPLOYEES RIGHT OUTER JOIN OCCUPATIONS
-ON EMPLOYEES.occu_code = OCCUPATIONS.code 
-AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000;
+ON EMPLOYEES.occu_code = OCCUPATIONS.code
+AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000
+ORDER BY FullName;
 
-+----------+--------+-----------+
-| name     | salary | name      |
-+----------+--------+-----------+
-| JAVIER   |   3000 | ANALYST   |
-| ANA      |   3000 | ANALYST   |
-| NULL     |   NULL | EMPLOYEE  |
-| JUDIT    |   2900 | MANAGER   |
-| ENRIQUE  |   2885 | MANAGER   |
-| FERNANDA |   2885 | MANAGER   |
-| NULL     |   NULL | PRESIDENT |
-| NULL     |   NULL | SALESMAN  |
-+----------+--------+-----------+
++----------------+--------+-----------+
+| FullName       | salary | name      |
++----------------+--------+-----------+
+| NULL           |   NULL | EMPLOYEE  |
+| NULL           |   NULL | PRESIDENT |
+| NULL           |   NULL | SALESMAN  |
+| ANA FERNÁNDEZ  |   3000 | ANALYST   |
+| ENRIQUE COLOM  |   2885 | MANAGER   |
+| FERNANDA RUIZ  |   2885 | MANAGER   |
+| JAVIER GIL     |   3000 | ANALYST   |
+| JUDIT AROCA    |   2900 | MANAGER   |
++----------------+--------+-----------+
 
 -- 3. Select the surname and occupation of the employees of department number 20 (show occupation name instead occupation code). Make four versions:
 
@@ -260,9 +268,10 @@ AND EMPLOYEES.dept_num = 20;
 
 -- 4. Show employee full name of the employees with no occupation and no department (sorted by full name).
 
-SELECT name, surname
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName
 FROM EMPLOYEES
-WHERE occu_code IS NULL AND dept_num IS NULL;
+WHERE occu_code IS NULL AND dept_num IS NULL
+ORDER BY FullName;
 
 +--------+----------+
 | name   | surname  |
@@ -272,18 +281,18 @@ WHERE occu_code IS NULL AND dept_num IS NULL;
 
 -- 5. Show the full names of the employees and occupation name whose occupation is neither "MANAGER" nor "EMPLOYEE" (=”occupation is not manager and is not employee”) and also have a salary higher than 2000.
 
-SELECT EMPLOYEES.name, EMPLOYEES.surname, OCCUPATIONS.name
+SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, OCCUPATIONS.name
 FROM EMPLOYEES JOIN OCCUPATIONS
 ON EMPLOYEES.occu_code = OCCUPATIONS.code 
 AND (OCCUPATIONS.name <> "MANAGER" OR "EMPLOYEE")
 AND (EMPLOYEES.salary > 2000);
 
-+--------+------------+---------+
-| name   | surname    | name    |
-+--------+------------+---------+
-| JAVIER | GIL        | ANALYST |
-| ANA    | FERNÁNDEZ  | ANALYST |
-+--------+------------+---------+
++----------------+---------+
+| FullName       | name    |
++----------------+---------+
+| JAVIER GIL     | ANALYST |
+| ANA FERNÁNDEZ  | ANALYST |
++----------------+---------+
 
 -- 6. Show all the data of all the employees (show department name instead department code, occupation name instead occupation code and manager surname instead manager num). Make two versions:
 
@@ -382,3 +391,12 @@ COUNT(*) AS NumEmployees
 FROM EMPLOYEES LEFT JOIN DEPARTMENTS 
 ON EMPLOYEES.dept_num = DEPARTMENTS.num
 GROUP BY EMPLOYEES.dept_num;
+
++------------+--------------+
+| name       | NumEmployees |
++------------+--------------+
+| NULL       |            2 |
+| ACCOUNTING |            2 |
+| RESEARCH   |            5 |
+| SALES      |            6 |
++------------+--------------+
