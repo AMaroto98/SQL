@@ -28,7 +28,7 @@ ORDER BY FullName;
 -- Using an implicit inner join
 
 SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
-FROM EMPLOYEES INNER JOIN OCCUPATIONS
+FROM EMPLOYEES, OCCUPATIONS
 WHERE EMPLOYEES.occu_code = OCCUPATIONS.code
 ORDER BY FullName;
 
@@ -124,7 +124,7 @@ ORDER BY FullName;
 -- Using an implicit inner join
 
 SELECT CONCAT(EMPLOYEES.name, " ", EMPLOYEES.surname) AS FullName, EMPLOYEES.salary, OCCUPATIONS.name
-FROM EMPLOYEES INNER JOIN OCCUPATIONS
+FROM EMPLOYEES, OCCUPATIONS
 WHERE EMPLOYEES.occu_code = OCCUPATIONS.code
 AND EMPLOYEES.salary NOT BETWEEN 1100 AND 2000
 ORDER BY FullName;
@@ -298,6 +298,7 @@ AND (EMPLOYEES.salary > 2000);
 -- 6. Show all the data of all the employees (show department name instead department code, occupation name instead occupation code and manager surname instead manager num). Make two versions:
 
 -- Falta la parte de los managers
+EMPLOYEES.surname AS ManagerSurname,
 
 -- Using INNER JOIN.
 
@@ -306,14 +307,18 @@ EMPLOYEES.name,
 EMPLOYEES.surname,
 DEPARTMENTS.name AS DepartName,
 OCCUPATIONS.name AS OccupationName,
-EMPLOYEES.surname AS ManagerName,
+
 EMPLOYEES.start_date, 
 EMPLOYEES.salary, 
 EMPLOYEES.commission
 FROM EMPLOYEES 
 INNER JOIN DEPARTMENTS ON EMPLOYEES.dept_num = DEPARTMENTS.num
-INNER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code
+INNER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code;
+
+
 INNER JOIN EMPLOYEES m2 ON EMPLOYEES.manager = m2.num;
+
+-- Salen solo 11 empleados porque hay empleados con dept_num y occu_code nulos y estoy usando un inner join
 
 
 -- Using LEFT OUTER JOIN.
