@@ -355,6 +355,8 @@ WHERE TABLE_SCHEMA = 'University';
 
 -- UPDATE A VIEW
 
+-- Asegúrate de que la vista se pueda actualizar: Para que una vista se pueda actualizar, debe cumplir ciertos requisitos, como que las columnas que se van a actualizar correspondan a una sola tabla, no se utilicen funciones agregadas, y no se utilicen cláusulas "GROUP BY" ni "HAVING". Si la vista no cumple con estos requisitos, es posible que no puedas actualizarla directamente.
+
 -- Si hago un update de una view funciona si solo tiene una tablas
 -- Si hay dos tablas relacionadas puede petar
 -- La inserción de vistas funciona a veces, esa es la idea que Jaume quiere que nos quedemos.
