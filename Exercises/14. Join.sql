@@ -298,7 +298,6 @@ AND (EMPLOYEES.salary > 2000);
 -- 6. Show all the data of all the employees (show department name instead department code, occupation name instead occupation code and manager surname instead manager num). Make two versions:
 
 -- Falta la parte de los managers
-EMPLOYEES.surname AS ManagerSurname,
 
 -- Using INNER JOIN.
 
@@ -307,32 +306,67 @@ EMPLOYEES.name,
 EMPLOYEES.surname,
 DEPARTMENTS.name AS DepartName,
 OCCUPATIONS.name AS OccupationName,
-
+m2.surname AS ManagerSurname,
 EMPLOYEES.start_date, 
 EMPLOYEES.salary, 
 EMPLOYEES.commission
 FROM EMPLOYEES 
 INNER JOIN DEPARTMENTS ON EMPLOYEES.dept_num = DEPARTMENTS.num
-INNER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code;
-
-
+INNER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code
 INNER JOIN EMPLOYEES m2 ON EMPLOYEES.manager = m2.num;
 
--- Salen solo 11 empleados porque hay empleados con dept_num y occu_code nulos y estoy usando un inner join
-
++------+----------+---------+------------+----------------+----------------+------------+--------+------------+
+| num  | name     | surname | DepartName | OccupationName | ManagerSurname | start_date | salary | commission |
++------+----------+---------+------------+----------------+----------------+------------+--------+------------+
+| 7499 | MARTA    | ARROYO  | SALES      | SALESMAN       | AMER           | 1990-02-20 |   1500 |        390 |
+| 7521 | JOSEP    | AGUILO  | SALES      | SALESMAN       | AMER           | 1991-02-22 |   1625 |        650 |
+| 7654 | MONICA   | MARTÍN  | SALES      | SALESMAN       | AMER           | 1991-09-29 |   1600 |       1020 |
+| 7788 | JAVIER   | GIL     | RESEARCH   | ANALYST        | AROCA          | 1991-11-09 |   3000 |       NULL |
+| 7844 | LUIS     | TOVAR   | SALES      | SALESMAN       | AMER           | 1991-09-08 |   1350 |          0 |
+| 7876 | FERNANDO | ALONSO  | RESEARCH   | EMPLOYEE       | GIL            | 1991-09-23 |   1430 |       NULL |
+| 7900 | XAVIER   | JIMENO  | SALES      | EMPLOYEE       | AMER           | 1991-12-03 |   1335 |       NULL |
+| 7934 | ANTONIA  | MUÑOZ   | ACCOUNTING | EMPLOYEE       | COLOM          | 1992-01-23 |   1690 |       NULL |
++------+----------+---------+------------+----------------+----------------+------------+--------+------------+
 
 -- Using LEFT OUTER JOIN.
 
+SELECT EMPLOYEES.num,
+EMPLOYEES.name,
+EMPLOYEES.surname,
+DEPARTMENTS.name AS DepartName,
+OCCUPATIONS.name AS OccupationName,
+m2.surname AS ManagerSurname,
+EMPLOYEES.start_date, 
+EMPLOYEES.salary, 
+EMPLOYEES.commission
+FROM EMPLOYEES 
+LEFT OUTER JOIN DEPARTMENTS ON EMPLOYEES.dept_num = DEPARTMENTS.num
+LEFT OUTER JOIN  OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code
+LEFT OUTER JOIN  EMPLOYEES m2 ON EMPLOYEES.manager = m2.num;
 
-
++------+-----------+------------+------------+----------------+----------------+------------+--------+------------+
+| num  | name      | surname    | DepartName | OccupationName | ManagerSurname | start_date | salary | commission |
++------+-----------+------------+------------+----------------+----------------+------------+--------+------------+
+|  800 | ANTONIO   | BANDERAS   | RESEARCH   | NULL           | NULL           | 1991-01-09 |   2885 |       NULL |
+| 7369 | SERGIO    | SÁNCHEZ    | NULL       | NULL           | FERNÁNDEZ      | 1990-12-17 |   1040 |       NULL |
+| 7499 | MARTA     | ARROYO     | SALES      | SALESMAN       | AMER           | 1990-02-20 |   1500 |        390 |
+| 7521 | JOSEP     | AGUILO     | SALES      | SALESMAN       | AMER           | 1991-02-22 |   1625 |        650 |
+| 7566 | JUDIT     | AROCA      | RESEARCH   | MANAGER        | NULL           | 1991-04-02 |   2900 |       NULL |
+| 7654 | MONICA    | MARTÍN     | SALES      | SALESMAN       | AMER           | 1991-09-29 |   1600 |       1020 |
+| 7698 | BARTOLOME | AMER       | SALES      | NULL           | NULL           | 1991-05-01 |   3005 |       NULL |
+| 7782 | ENRIQUE   | COLOM      | ACCOUNTING | MANAGER        | NULL           | 1991-06-09 |   2885 |       NULL |
+| 7788 | JAVIER    | GIL        | RESEARCH   | ANALYST        | AROCA          | 1991-11-09 |   3000 |       NULL |
+| 7844 | LUIS      | TOVAR      | SALES      | SALESMAN       | AMER           | 1991-09-08 |   1350 |          0 |
+| 7876 | FERNANDO  | ALONSO     | RESEARCH   | EMPLOYEE       | GIL            | 1991-09-23 |   1430 |       NULL |
+| 7900 | XAVIER    | JIMENO     | SALES      | EMPLOYEE       | AMER           | 1991-12-03 |   1335 |       NULL |
+| 7902 | ANA       | FERNÁNDEZ  | NULL       | ANALYST        | AROCA          | 1991-12-03 |   3000 |       NULL |
+| 7934 | ANTONIA   | MUÑOZ      | ACCOUNTING | EMPLOYEE       | COLOM          | 1992-01-23 |   1690 |       NULL |
+| 8001 | FERNANDA  | RUIZ       | RESEARCH   | MANAGER        | NULL           | 1992-06-10 |   2885 |       NULL |
++------+-----------+------------+------------+----------------+----------------+------------+--------+------------+
 
 -- 7. Show the data of the employees whose salary is greater than 2000  (show department name instead department code, occupation name instead occupation code and manager surname instead manager num). Make two versions:
 
--- EN AMBAS FALTA LA PARTE DE LOS MANAGERS QUE TODAVÍA NO SÉ COMO PONERLA PARA QUE SALGA TODO.
-
 -- Using INNER JOIN
-
--- EMPLOYEES.name AS ManagerName,
 
 SELECT 
 EMPLOYEES.num,
@@ -340,26 +374,23 @@ EMPLOYEES.name,
 EMPLOYEES.surname,
 DEPARTMENTS.name AS DepartName,
 OCCUPATIONS.name AS OccupationName,
+m2.surname AS ManagerSurname,
 EMPLOYEES.start_date, 
 EMPLOYEES.salary, 
 EMPLOYEES.commission
 FROM EMPLOYEES
 INNER JOIN DEPARTMENTS ON EMPLOYEES.dept_num = DEPARTMENTS.num
 INNER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code
+INNER JOIN EMPLOYEES m2 ON EMPLOYEES.manager = m2.num
 WHERE EMPLOYEES.salary > 2000;
 
-+------+----------+---------+------------+----------------+------------+--------+------------+
-| num  | name     | surname | DepartName | OccupationName | start_date | salary | commission |
-+------+----------+---------+------------+----------------+------------+--------+------------+
-| 7566 | JUDIT    | AROCA   | RESEARCH   | MANAGER        | 1991-04-02 |   2900 |       NULL |
-| 7782 | ENRIQUE  | COLOM   | ACCOUNTING | MANAGER        | 1991-06-09 |   2885 |       NULL |
-| 7788 | JAVIER   | GIL     | RESEARCH   | ANALYST        | 1991-11-09 |   3000 |       NULL |
-| 8001 | FERNANDA | RUIZ    | RESEARCH   | MANAGER        | 1992-06-10 |   2885 |       NULL |
-+------+----------+---------+------------+----------------+------------+--------+------------+
++------+--------+---------+------------+----------------+----------------+------------+--------+------------+
+| num  | name   | surname | DepartName | OccupationName | ManagerSurname | start_date | salary | commission |
++------+--------+---------+------------+----------------+----------------+------------+--------+------------+
+| 7788 | JAVIER | GIL     | RESEARCH   | ANALYST        | AROCA          | 1991-11-09 |   3000 |       NULL |
++------+--------+---------+------------+----------------+----------------+------------+--------+------------+
 
 -- Using LEFT OUTER JOIN
-
--- EMPLOYEES.name AS ManagerName,
 
 SELECT 
 EMPLOYEES.num,
@@ -367,30 +398,29 @@ EMPLOYEES.name,
 EMPLOYEES.surname,
 DEPARTMENTS.name AS DepartName,
 OCCUPATIONS.name AS OccupationName,
+m2.surname AS ManagerSurname,
 EMPLOYEES.start_date, 
 EMPLOYEES.salary, 
 EMPLOYEES.commission
 FROM EMPLOYEES
 LEFT OUTER JOIN DEPARTMENTS ON EMPLOYEES.dept_num = DEPARTMENTS.num
 LEFT OUTER JOIN OCCUPATIONS ON EMPLOYEES.occu_code = OCCUPATIONS.code
+LEFT OUTER JOIN EMPLOYEES m2 ON EMPLOYEES.manager = m2.num
 WHERE EMPLOYEES.salary > 2000;
 
-
-+------+-----------+------------+------------+----------------+------------+--------+------------+
-| num  | name      | surname    | DepartName | OccupationName | start_date | salary | commission |
-+------+-----------+------------+------------+----------------+------------+--------+------------+
-|  800 | ANTONIO   | BANDERAS   | RESEARCH   | NULL           | 1991-01-09 |   2885 |       NULL |
-| 7566 | JUDIT     | AROCA      | RESEARCH   | MANAGER        | 1991-04-02 |   2900 |       NULL |
-| 7698 | BARTOLOME | AMER       | SALES      | NULL           | 1991-05-01 |   3005 |       NULL |
-| 7782 | ENRIQUE   | COLOM      | ACCOUNTING | MANAGER        | 1991-06-09 |   2885 |       NULL |
-| 7788 | JAVIER    | GIL        | RESEARCH   | ANALYST        | 1991-11-09 |   3000 |       NULL |
-| 7902 | ANA       | FERNÁNDEZ  | NULL       | ANALYST        | 1991-12-03 |   3000 |       NULL |
-| 8001 | FERNANDA  | RUIZ       | RESEARCH   | MANAGER        | 1992-06-10 |   2885 |       NULL |
-+------+-----------+------------+------------+----------------+------------+--------+------------+
++------+-----------+------------+------------+----------------+----------------+------------+--------+------------+
+| num  | name      | surname    | DepartName | OccupationName | ManagerSurname | start_date | salary | commission |
++------+-----------+------------+------------+----------------+----------------+------------+--------+------------+
+|  800 | ANTONIO   | BANDERAS   | RESEARCH   | NULL           | NULL           | 1991-01-09 |   2885 |       NULL |
+| 7566 | JUDIT     | AROCA      | RESEARCH   | MANAGER        | NULL           | 1991-04-02 |   2900 |       NULL |
+| 7698 | BARTOLOME | AMER       | SALES      | NULL           | NULL           | 1991-05-01 |   3005 |       NULL |
+| 7782 | ENRIQUE   | COLOM      | ACCOUNTING | MANAGER        | NULL           | 1991-06-09 |   2885 |       NULL |
+| 7788 | JAVIER    | GIL        | RESEARCH   | ANALYST        | AROCA          | 1991-11-09 |   3000 |       NULL |
+| 7902 | ANA       | FERNÁNDEZ  | NULL       | ANALYST        | AROCA          | 1991-12-03 |   3000 |       NULL |
+| 8001 | FERNANDA  | RUIZ       | RESEARCH   | MANAGER        | NULL           | 1992-06-10 |   2885 |       NULL |
++------+-----------+------------+------------+----------------+----------------+------------+--------+------------+
 
 -- 8.- Show number of employees per department considering employees with no department (clue: two queries with UNION).
-
--- Lo hago sin Union 
 
 SELECT DEPARTMENTS.name,
 COUNT(*) AS NumEmployees
