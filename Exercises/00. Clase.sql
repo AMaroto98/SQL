@@ -406,3 +406,40 @@ insert into section (semester, course_id, sec_id, year) VALUES ("Chicote", "mojo
 
 -- Si funciona
 insert into section (semester, course_id, sec_id, year) VALUES ("Fall", "mojon", "pito", 2030);
+
+
+create table person (
+ID char(10),
+name char(40),
+mother char(10),
+father char(10),
+primary key (ID),
+foreign key (father) references person (ID),
+foreign key (mother) references person (ID));
+
+
+insert into person
+values (
+  '12345',
+  'Jaume',
+  '11111',
+  '22222');
+
+--   NO deja hacer el insert porque no hay nadie con un ID 1111 o 22222
+-- Para desactivarlo temporalmente se puede usar SET FOREIGN_KEY_CHECKS = 0
+-- SET FOREIGN_KEY_CHECKS = 1; SE ACTIVA
+
+
+-- Los selects dentro de los checks no funcionan
+
+CREATE TABLE Prueba (
+    name VARCHAR(45),
+    FechaNacimiento DATE,
+    FechaMuerte DATE,
+    CHECK (FechaMuerte > FechaNacimiento)
+);
+
+INSERT INTO Prueba VALUES ("Pedro", '1997-01-16', '2099-09-16');
+
+INSERT INTO Prueba VALUES ("Pedro", '3000-01-16', '2099-09-16');
+ERROR 3819 (HY000): Check constraint 'Chicote_chk_1' is violated.

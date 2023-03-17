@@ -1,6 +1,6 @@
-Open 2 connections to your MariaDB DBMS.
+-- Open 2 connections to your MariaDB DBMS.
 
-In connection #0:
+-- In connection #0:
 MariaDB [(none)]> create database deadlock;
 Query OK, 1 row affected (0,001 sec)
 
@@ -8,16 +8,15 @@ MariaDB [(none)]> use deadlock;
 Database changed
 MariaDB [deadlock]> 
 
-In connection #1:
+-- In connection #1:
 MariaDB [(none)]> use deadlock;
 Database changed
 MariaDB [deadlock]>
 
-In connection #0
+-- In connection #0
 MariaDB [deadlock]> create table numbers (
     -> number int not null PRIMARY KEY
     -> ) ENGINE=INNODB;
-Query OK, 0 rows affected (0,022 sec)
 
 MariaDB [deadlock]> insert into numbers values (1,2,3,4,5);
 ERROR 1136 (21S01): Column count doesn t match value count at row 1
